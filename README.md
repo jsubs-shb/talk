@@ -6,12 +6,30 @@
 
 ---
 
+## 下载
+
+预编译包在 [`apk/`](apk) 目录，当前版本 `语伴_v1.19.apk`。最低 Android 10（API 29）。
+
+装法、风险提示怎么处理、权限清单都在 [安装说明](docs/语伴_安装说明.md)。
+
+> 包里用的是调试用的默认签名证书，不是正式密钥。自己长期分发请换成自己固定的密钥并妥善保管。
+
+## 文档
+
+| 文档 | 内容 |
+|---|---|
+| [安装说明](docs/语伴_安装说明.md) | 安装、风险提示、权限、不具备的能力、验签 |
+| [使用说明](docs/语伴_使用说明.md) | 界面、填 Key、通话、手势、对话管理、设置项 |
+| [MCP 提示词](docs/语伴_MCP提示词.md) | 粘给 AI 的通话规则 |
+
 ## 目录结构
 
 ```
 AndroidManifest.xml        清单：权限、Activity、前台服务
 build.sh                   构建脚本（aapt2 → javac → d8 → 打包 → 签名）
 pack.py                    资源 APK + dex 合成最终 APK，并做 resources.arsc 对齐
+apk/                       预编译安装包
+docs/                      安装说明、使用说明、MCP 提示词
 res/values/strings.xml     应用名
 src/com/dsh/talk/
   MainActivity.java        全部 UI 与业务逻辑（单文件，体量较大）
@@ -20,7 +38,7 @@ src/com/dsh/talk/
   VoiceService.java        常驻前台服务，保活 + 通知栏状态
 ```
 
-## 构建
+## 从源码构建
 
 项目**不用 Gradle**，是手写脚本走 aapt2 / javac / d8 / apksigner 全流程。
 
@@ -52,7 +70,7 @@ export AAPT2=$BT/aapt2
 
 缺哪一样，脚本会直接说缺什么、该怎么设，不会一头雾水地 fail。
 
-脚本会在没有 `debug.keystore` 时自动生成一个。**正式分发请换成自己的固定密钥并妥善保管**——密钥一换，老用户就得卸载重装。
+脚本会在没有 `debug.keystore` 时自动生成一个。
 
 最低支持 Android 10（API 29），targetSdk 36。
 
@@ -82,9 +100,15 @@ export AAPT2=$BT/aapt2
 | `state` | 查询当前通话状态 |
 | `end_call` | 挂断 |
 
-连接后客户端会自动读到 `instructions` 里写给 AI 的通话规则（可在设置里改）。
+连接后客户端会自动读到 `instructions` 里写给 AI 的通话规则（可在设置里改）。往客户端里填的现成规则见 [MCP 提示词](docs/语伴_MCP提示词.md)。
 
 MCP 本身是单向的：服务端只能发起呼叫给用户，不存在「用户主动拨给 AI」这条链路。要让 AI 主动打过来，客户端定时调 `start_call` 就行。
+
+## 已知问题
+
+这项目是自己用顺手才写的，没做过机型适配，也不追公开的缺陷清单。界面细节、识别模型对英文词的处理、通话前后的音量控制这几处都还有毛边，出现在哪个机型上算个例。
+
+碰到了就开 issue，写明机型、系统版本、复现步骤，能修的修。
 
 ## 权限说明
 

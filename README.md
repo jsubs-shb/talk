@@ -86,10 +86,6 @@ export AAPT2=$BT/aapt2
 
 MCP 本身是单向的：服务端只能发起呼叫给用户，不存在「用户主动拨给 AI」这条链路。要让 AI 主动打过来，客户端定时调 `start_call` 就行。
 
-## 已知问题
-
-见 [Issues](https://github.com/jsubs-shb/talk/issues)。目前挂着三项：来电界面底部透明未生效、英文词被识别成中文音译、通话中音量键偶发无响应。
-
 ## 权限说明
 
 | 权限 | 用途 |

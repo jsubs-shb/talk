@@ -8,7 +8,9 @@
 
 ## 下载
 
-预编译包在 [`apk/`](apk) 目录，当前版本 `语伴_v1.19.apk`。最低 Android 10（API 29）。
+直接到 [Releases](https://github.com/jsubs-shb/talk/releases) 下最新安装包，当前是 v1.19。最低 Android 10（API 29）。
+
+源码仓库里的 [`apk/`](apk) 目录也放了一份，两边是同一个文件。
 
 装法、风险提示怎么处理、权限清单都在 [安装说明](docs/语伴_安装说明.md)。
 
@@ -76,15 +78,17 @@ export AAPT2=$BT/aapt2
 
 ## 配置
 
-应用**不内置任何 API Key**，首次使用需要在设置里填：
+应用**不内置任何 API Key**，首次使用需要在设置里填三样：对话模型、识别模型、语音模型。三处都按 OpenAI 兼容格式发请求，地址和模型名都可以换成别的服务商。
 
-| 项目 | 用途 | 默认 |
-|---|---|---|
-| 对话模型 | 决定怎么回答 | DeepSeek（`api.deepseek.com`） |
-| 识别模型 | 语音转文字 | 阿里云 DashScope `qwen3-asr-flash` |
-| 语音模型 | 文字转语音 | ElevenLabs，需填音色 ID |
+默认值：
 
-接口是 OpenAI 兼容格式，地址和模型名都可以换成别的服务商。
+| 项目 | 默认 |
+|---|---|
+| 对话 | DeepSeek（`api.deepseek.com`） |
+| 识别 | 阿里云 DashScope `qwen3-asr-flash` |
+| 语音 | ElevenLabs，需填音色 ID |
+
+设置里内置了一批服务商预设（DeepSeek、OpenAI、Anthropic、xAI、Gemini、智谱、Moonshot、火山方舟、阿里云百炼等），选一个再填 Key 就行；也可以直接填自定义地址。
 
 ## MCP 服务
 

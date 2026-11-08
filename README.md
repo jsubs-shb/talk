@@ -87,3 +87,7 @@ AAPT2=$TC/sysroot/.../bin/aapt2
 ## 未上架说明
 
 本项目未在应用商店上架，安装时国产 ROM（ColorOS / HyperOS 等）会弹通用的「未知来源应用风险」提示。那是针对未上架应用的模板文案，不是实际检出问题。
+
+## 许可
+
+MIT License，见 [LICENSE](LICENSE)。

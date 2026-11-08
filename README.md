@@ -28,16 +28,29 @@ src/com/dsh/talk/
 ./build.sh
 ```
 
-依赖的 SDK / JDK / toolchain 路径写在 `build.sh` 开头，首次使用需要按自己机器的情况改：
+工具链会自动探测，顺序是：项目目录下的 `toolchain/` → `$HOME/toolchain` → `/sdcard/toolchain`。
+也可以直接用环境变量逐个指定：
+
+| 变量 | 含义 |
+|---|---|
+| `TC` | 工具链根目录 |
+| `AAPT2` | aapt2 可执行文件 |
+| `JAVAC` | javac 可执行文件 |
+| `BT` | build-tools 目录（需含 `lib/d8.jar`、`lib/apksigner.jar`） |
+| `AJ` | android.jar |
+
+机器上已经装好 Android SDK 的话，这样跑：
 
 ```sh
-TC=/path/to/toolchain
-SR=$TC/sysroot/.../lib
-J=$TC/jdk/.../java-17-openjdk
-BT=$TC/sdk/build-tools/36.0.0
-AJ=$TC/sdk/platforms/android-36/android.jar
-AAPT2=$TC/sysroot/.../bin/aapt2
+export ANDROID_HOME=$HOME/Android/Sdk
+export BT=$ANDROID_HOME/build-tools/36.0.0
+export AJ=$ANDROID_HOME/platforms/android-36/android.jar
+export JAVAC=/usr/lib/jvm/java-17-openjdk/bin/javac
+export AAPT2=$BT/aapt2
+./build.sh
 ```
+
+缺哪一样，脚本会直接说缺什么、该怎么设，不会一头雾水地 fail。
 
 脚本会在没有 `debug.keystore` 时自动生成一个。**正式分发请换成自己的固定密钥并妥善保管**——密钥一换，老用户就得卸载重装。
 
@@ -70,6 +83,12 @@ AAPT2=$TC/sysroot/.../bin/aapt2
 | `end_call` | 挂断 |
 
 连接后客户端会自动读到 `instructions` 里写给 AI 的通话规则（可在设置里改）。
+
+MCP 本身是单向的：服务端只能发起呼叫给用户，不存在「用户主动拨给 AI」这条链路。要让 AI 主动打过来，客户端定时调 `start_call` 就行。
+
+## 已知问题
+
+见 [Issues](https://github.com/jsubs-shb/talk/issues)。目前挂着三项：来电界面底部透明未生效、英文词被识别成中文音译、通话中音量键偶发无响应。
 
 ## 权限说明
 
